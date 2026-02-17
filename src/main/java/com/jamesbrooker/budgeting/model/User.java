@@ -1,4 +1,4 @@
-package com.jamesbrooker.budgeting;
+package com.jamesbrooker.budgeting.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -27,20 +27,15 @@ public class User {
     private LocalDateTime createdAt;
 
     //Constructor
-    protected User(String email, String password) {
+    public User(String email, String hashedPassword) {
         this.email = email;
-        this.password = hashPassword(password);
+        this.password = hashedPassword;
         this.id = UUID.randomUUID();
         this.createdAt = LocalDateTime.now();
     }
 
     //Default Constructor required by JPA
     protected User() {}
-
-    //Password hashing placeholder
-    private String hashPassword(String password) {
-        return "";
-    }
 
     // Getters & setters (needed for JPA to access fields)
     public UUID getId() { return id; }
