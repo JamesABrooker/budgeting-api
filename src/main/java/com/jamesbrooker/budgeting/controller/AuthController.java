@@ -1,9 +1,14 @@
 package com.jamesbrooker.budgeting.controller;
 
 import com.jamesbrooker.budgeting.service.UserService;
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.jamesbrooker.budgeting.model.*;
 import com.jamesbrooker.budgeting.security.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -26,6 +31,22 @@ public class AuthController {
 
     static class LoginRequest {
         public String email;
+        public String password;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
+        User user = userService.register(request.email, request.password);
+        UserResponse response = new UserResponse(user.getId(), user.getEmail());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    static class RegisterRequest {
+        @Email
+        @NotBlank
+        public String email;
+        @NotBlank
+        @Size(min = 8, max = 100)
         public String password;
     }
 }
