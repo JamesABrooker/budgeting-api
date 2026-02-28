@@ -1,6 +1,8 @@
 package com.jamesbrooker.budgeting.model;
 
 import jakarta.persistence.*;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -17,9 +19,11 @@ public class User {
     @GeneratedValue
     private UUID id;
 
+    @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Setter
     @Column(nullable = false)
     private String password;
 
@@ -43,6 +47,4 @@ public class User {
     public String getPassword() { return password; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
 }
