@@ -12,14 +12,22 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
-    private final String secretKey = System.getenv("JWT_SECRET");
-    Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    private final Key key;
 
-    // Validate the token (signature + expiration)
+    public JwtUtil() {
+        String secretKey = System.getenv("JWT_SECRET");
+        if (secretKey == null || secretKey.length() < 32) {
+            throw new IllegalStateException("JWT_SECRET must be at least 32 characters");
+        }
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+
+
+    //Validate the token (signature + expiration)
     public boolean validateToken(String token) {
         try {
             Claims claims = extractAllClaims(token);
-            // Check that claims exist in database
+            //Check that claims exist in database
             Date expiration = claims.getExpiration();
             if(expiration.before(new Date())) return false;
             return true;
