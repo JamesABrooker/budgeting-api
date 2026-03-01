@@ -1,5 +1,6 @@
 package com.jamesbrooker.budgeting.service;
 
+import com.jamesbrooker.budgeting.exception.EmailAlreadyExistsException;
 import com.jamesbrooker.budgeting.model.User;
 import com.jamesbrooker.budgeting.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,7 @@ public class UserService {
     //Registers a new user
     public User register(String email, String rawPassword) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException(email);
         }
         if(!validPassword(rawPassword)) {throw new RuntimeException("Invalid password");}
         String hashedPassword = passwordEncoder.encode(rawPassword);
