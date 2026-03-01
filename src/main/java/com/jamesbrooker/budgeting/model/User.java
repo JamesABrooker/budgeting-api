@@ -34,7 +34,6 @@ public class User {
     public User(String email, String hashedPassword) {
         this.email = email;
         this.password = hashedPassword;
-        this.id = UUID.randomUUID();
         this.createdAt = LocalDateTime.now();
     }
 
