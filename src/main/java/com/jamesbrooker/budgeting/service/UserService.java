@@ -4,6 +4,7 @@ import com.jamesbrooker.budgeting.model.User;
 import com.jamesbrooker.budgeting.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.authentication.BadCredentialsException;
 
 @Service
 public class UserService {
@@ -29,8 +30,8 @@ public class UserService {
 
     //Attempts to login a user
     public User authenticate(String email, String rawPassword) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Invalid credentials"));
-        if (!passwordEncoder.matches(rawPassword, user.getPassword())) throw new RuntimeException("Invalid credentials");
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) throw new BadCredentialsException("Invalid credentials");
         return user;
     }
 
